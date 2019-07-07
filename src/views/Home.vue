@@ -1,31 +1,64 @@
 <template>
-  <section class="main">
-    <LineChart
-      v-if="data.length > 0 && categories.length > 0"
-      :data="data"
-      :categories="categories"
-    />
-    <ul>
-      <li
-        v-for="(unit, index) in units"
-        :key="index"
-        @click="showUnitChart(unit)"
-      >unit-{{ index + 1 }}</li>
-      <li @click="categories = []; data = [];">close</li>
-    </ul>
+  <section>
+    <div class="modal-window">
+      <LineChart
+        v-if="data.length > 0 && categories.length > 0"
+        :data="data"
+        :categories="categories"
+        style="position: absolute; background-color: #fff; z-index: 1000;"
+      />
+    </div>
+    <el-tabs type="border-card" class="main">
+      <el-tab-pane label="Star">
+        <KonvaStar @unit-clicked="changeCurrentUnit"></KonvaStar>
+      </el-tab-pane>
+      <el-tab-pane label="Bus" style="width: 100%;">
+        <KonvaBus @unit-clicked="changeCurrentUnit"></KonvaBus>
+      </el-tab-pane>
+    </el-tabs>
   </section>
 </template>
 
 <script>
 // @ is an alias to /src
 import LineChart from "@/components/LineChart.vue";
+import KonvaStar from "@/components/Konva-star.vue";
+import KonvaBus from "@/components/Konva-bus.vue";
+
+const axios = require("axios");
 
 export default {
   name: "home",
   components: {
-    LineChart
+    LineChart,
+    KonvaStar,
+    KonvaBus
   },
+  // async created() {
+  //   await axios
+  //     .get("http://192.168.1.51/data:5000")
+  //     .then(function(response) {
+  //       // handle success
+  //       console.log(response);
+  //     })
+  //     .catch(function(error) {
+  //       // handle error
+  //       console.log(error);
+  //     })
+  //     .finally(function() {
+  //       // always executed
+  //     });
+  // },
   methods: {
+    changeCurrentUnit(unitName) {
+      var unitIndex = +unitName.split("-")[1] - 1;
+      if (unitIndex > this.units.length - 1) {
+        this.categories = [];
+        this.data = [];
+      } else {
+        this.showUnitChart(this.units[unitIndex]);
+      }
+    },
     showUnitChart(unit) {
       this.categories = unit.categories;
       this.data = unit.data;
@@ -81,10 +114,7 @@ export default {
 };
 </script>
 <style scoped>
-.main {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.modal-window {
+  width: 500px;
 }
 </style>

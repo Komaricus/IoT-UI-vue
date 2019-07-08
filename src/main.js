@@ -5,9 +5,11 @@ import VueApexCharts from 'vue-apexcharts'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import VueKonva from 'vue-konva'
+import DragItDude from 'vue-drag-it-dude';
 
 
 Vue.component('apexchart', VueApexCharts)
+Vue.component('vue-drag-it-dude', DragItDude)
 Vue.use(ElementUI);
 Vue.use(VueKonva)
 

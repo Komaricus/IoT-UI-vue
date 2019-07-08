@@ -5,7 +5,7 @@
       <v-line ref="line-2" :config="lineConfig2"></v-line>
       <v-line ref="line-3" :config="lineConfig3"></v-line>
       <v-group
-        @click="$emit('unit-clicked', 'unit-1')"
+        @click="handleClick(0)"
         @dragmove="handleDragMove1"
         @dragstart="handleDragStart"
         @dragend="handleDragEnd"
@@ -41,7 +41,7 @@
         />
       </v-group>
       <v-group
-        @click="$emit('unit-clicked', 'unit-2')"
+        @click="handleClick(1)"
         @dragmove="handleDragMove2"
         @dragstart="handleDragStart"
         @dragend="handleDragEnd"
@@ -78,7 +78,7 @@
       </v-group>
 
       <v-group
-        @click="$emit('unit-clicked', 'unit-3')"
+        @click="handleClick(2)"
         @dragmove="handleDragMove3"
         @dragstart="handleDragStart"
         @dragend="handleDragEnd"
@@ -115,7 +115,7 @@
       </v-group>
 
       <v-group
-        @click="$emit('unit-clicked', 'unit-4')"
+        @click="handleClick(3)"
         @dragmove="handleDragMove4"
         @dragstart="handleDragStart"
         @dragend="handleDragEnd"
@@ -124,11 +124,11 @@
           y: stageSize.height / 2,
           draggable: true,
           dragBoundFunc: function(pos) {
-            var newX = pos.x < 50 ? 50 : pos.x;
-            var newY = pos.y < 50 ? 50 : pos.y;
+            var newX = pos.x < 100 ? 100 : pos.x;
+            var newY = pos.y < 100 ? 100 : pos.y;
             return {
-                x: newX > stageSize.width - 50 ? stageSize.width - 50 : newX,
-                y: newY > stageSize.height - 50 ? stageSize.height - 50 : newY
+                x: newX > stageSize.width - 100 ? stageSize.width - 100 : newX,
+                y: newY > stageSize.height - 100 ? stageSize.height - 100 : newY
             };
             }
         }"
@@ -155,7 +155,7 @@
 </template>
 
 <script>
-const width = window.innerWidth;
+const width = window.innerWidth - 100;
 const height = window.innerHeight - 100;
 
 export default {
@@ -188,10 +188,23 @@ export default {
         points: [(3 * width) / 5, height / 2, (4 * width) / 5, height / 2],
         stroke: "black",
         tension: 1
-      }
+      },
+      unitsPosisions: [
+        { x: width / 5, y: height / 2 },
+        { x: (2 * width) / 5, y: height / 2 },
+        { x: (3 * width) / 5, y: height / 2 },
+        { x: (4 * width) / 5, y: height / 2 }
+      ]
     };
   },
   methods: {
+    handleClick(index) {
+      this.$emit("unit-clicked", {
+        name: "Unit-" + (index + 1),
+        x: this.unitsPosisions[index].x,
+        y: this.unitsPosisions[index].y
+      });
+    },
     handleDragMove1(e) {
       var points = [
         e.target.position().x,

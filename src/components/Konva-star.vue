@@ -5,7 +5,7 @@
       <v-line ref="line-2" :config="lineConfig2"></v-line>
       <v-line ref="line-3" :config="lineConfig3"></v-line>
       <v-group
-        @click="$emit('unit-clicked', 'unit-1')"
+        @click="handleClick(0)"
         @dragmove="handleDragMove"
         @dragstart="handleDragStart"
         @dragend="handleDragEnd"
@@ -40,7 +40,7 @@
         />
       </v-group>
       <v-group
-        @click="$emit('unit-clicked', 'unit-2')"
+        @click="handleClick(1)"
         @dragmove="handleDragMove"
         @dragstart="handleDragStart"
         @dragend="handleDragEnd"
@@ -76,7 +76,7 @@
       </v-group>
 
       <v-group
-        @click="$emit('unit-clicked', 'unit-3')"
+        @click="handleClick(2)"
         @dragmove="handleDragMove"
         @dragstart="handleDragStart"
         @dragend="handleDragEnd"
@@ -112,7 +112,7 @@
       </v-group>
 
       <v-group
-        @click="$emit('unit-clicked', 'unit-4')"
+        @click="handleClick(3)"
         @dragmove="handleDragMove"
         @dragstart="handleDragStart"
         @dragend="handleDragEnd"
@@ -124,8 +124,8 @@
             var newX = pos.x < 50 ? 50 : pos.x;
             var newY = pos.y < 50 ? 50 : pos.y;
             return {
-                x: newX > stageSize.width - 50 ? stageSize.width - 50 : newX,
-                y: newY > stageSize.height - 50 ? stageSize.height - 50 : newY
+                x: newX > stageSize.width - 160 ? stageSize.width - 160 : newX,
+                y: newY > stageSize.height - 150 ? stageSize.height - 150 : newY
             };
             }
         }"
@@ -154,7 +154,7 @@
 </template>
 
 <script>
-const width = window.innerWidth;
+const width = window.innerWidth - 100;
 const height = window.innerHeight - 100;
 
 export default {
@@ -192,10 +192,23 @@ export default {
         ],
         stroke: "black",
         tension: 1
-      }
+      },
+      unitsPosisions: [
+        { x: width / 2, y: 150 },
+        { x: width / 3 - 50, y: height / 2 + 100 },
+        { x: (2 * width) / 3 + 50, y: height / 2 + 100 },
+        { x: width / 2 - 75, y: height / 2 - 130 }
+      ]
     };
   },
   methods: {
+    handleClick(index) {
+      this.$emit("unit-clicked", {
+        name: "Unit-" + (index + 1),
+        x: this.unitsPosisions[index].x,
+        y: this.unitsPosisions[index].y
+      });
+    },
     handleDragMove(e) {
       if (e.target.attrs.name == "line-4") {
         var lines = ["line-1", "line-2", "line-3"];
@@ -222,6 +235,8 @@ export default {
       this.isDragging[e.target.attrs.name] = true;
     },
     handleDragEnd(e) {
+      var unitIndex = +e.target.attrs.name.split("-")[1] - 1;
+      this.unitsPosisions[unitIndex] = e.target.position();
       this.isDragging[e.target.attrs.name] = false;
     }
   }

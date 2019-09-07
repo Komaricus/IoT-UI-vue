@@ -27,7 +27,7 @@
         <v-circle
           :config="{
             radius: 50,
-            fill: this.isDragging['line-1'] ? 'blue' : 'green',
+            fill: this.isDragging['line-1'] ? 'blue' : 'red',
             stroke: 'black',
             strokeWidth: 2
           }"
@@ -63,7 +63,7 @@
         <v-circle
           :config="{
             radius: 50,
-            fill: this.isDragging['line-2'] ? 'blue' : 'green',
+            fill: this.isDragging['line-2'] ? 'blue' : 'red',
             stroke: 'black',
             strokeWidth: 2
           }"
@@ -100,7 +100,7 @@
         <v-circle
           :config="{
             radius: 50,
-            fill: this.isDragging['line-3'] ? 'blue' : 'green',
+            fill: this.isDragging['line-3'] ? 'blue' : 'red',
             stroke: 'black',
             strokeWidth: 2
           }"
@@ -137,7 +137,7 @@
         <v-circle
           :config="{
             radius: 50,
-            fill: this.isDragging['line-4'] ? 'blue' : 'green',
+            fill: this.isDragging['line-4'] ? 'blue' : 'red',
             stroke: 'black',
             strokeWidth: 2
           }"
